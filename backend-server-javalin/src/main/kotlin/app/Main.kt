@@ -1,50 +1,51 @@
 package app
 
-import app.user.User
-import app.user.UserDao
+import app.employee.Employee
+import app.employee.EmployeeDao
 import io.javalin.apibuilder.ApiBuilder.*
 import io.javalin.Javalin
 
 fun main(args: Array<String>) {
 
-    val userDao = UserDao()
+    val employeeDao = EmployeeDao()
 
     val app = Javalin.create().apply {
         exception(Exception::class.java) { e, ctx -> e.printStackTrace() }
         error(404) { ctx -> ctx.json("not found") }
-    }.start(7000)
+    }.enableCorsForAllOrigins().start(7000)
 
     app.routes {
 
-        get("/users") { ctx ->
-            ctx.json(userDao.users)
+        get("/employees") { ctx ->
+            ctx.json(employeeDao.employees)
         }
 
-        get("/users/:user-id") { ctx ->
-            ctx.json(userDao.findById(ctx.pathParam("user-id").toInt())!!)
+        get("/employees/:employee-id") { ctx ->
+            ctx.json(employeeDao.findById(ctx.pathParam("employee-id").toInt())!!)
         }
 
-        get("/users/email/:email") { ctx ->
-            ctx.json(userDao.findByEmail(ctx.pathParam("email"))!!)
+        get("/employees/name/:name") { ctx ->
+            ctx.json(employeeDao.findByName(ctx.pathParam("name"))!!)
         }
 
-        post("/users") { ctx ->
-            val user = ctx.body<User>()
-            userDao.save(name = user.name, email = user.email)
+        post("/employees") { ctx ->
+            val employee = ctx.body<Employee>()
+            val newEmployee = employeeDao.save(name = employee.name, age = employee.age)!!
             ctx.status(201)
+            ctx.json(newEmployee)
         }
 
-        patch("/users/:user-id") { ctx ->
-            val user = ctx.body<User>()
-            userDao.update(
-                    id = ctx.pathParam("user-id").toInt(),
-                    user = user
+        patch("/employees/:employee-id") { ctx ->
+            val employee = ctx.body<Employee>()
+            employeeDao.update(
+                    id = ctx.pathParam("employee-id").toInt(),
+                    employee = employee
             )
             ctx.status(204)
         }
 
-        delete("/users/:user-id") { ctx ->
-            userDao.delete(ctx.pathParam("user-id").toInt())
+        delete("/employees/:employee-id") { ctx ->
+            employeeDao.delete(ctx.pathParam("employee-id").toInt())
             ctx.status(204)
         }
 
