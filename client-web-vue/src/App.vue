@@ -2,8 +2,8 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <span>Employee Manager</span>
+        <span class="font-weight-light"> >MATERIAL DESIGN</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -16,23 +16,23 @@
     </v-toolbar>
 
     <v-content>
-      <HelloWorld/>
+      <EmployeeContainer/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import EmployeeContainer from "./components/EmployeeContainer";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    EmployeeContainer
   },
-  data () {
+  data() {
     return {
       //
-    }
+    };
   }
-}
+};
 </script>
